@@ -24,6 +24,8 @@ typedef struct Graph
 {
     int size;
     int* visited;
+    int* ant;
+    int* cost;
     struct AdjacencyList *adjList;
 } Graph;
 
@@ -47,7 +49,7 @@ AdjacencyListNode *newAdjacencyListNode(int destination, int weight);
 Graph *createGraph(int size);
 void addEdge(Graph *graph, int source, int destination, int weight);
 void addNodeInAdjacencyList(Graph *graph, int adjListVertex, int vertex, int weight);
-Graph *createAndPopulateGraphByFile(FILE *file);
+Graph *createAndPopulateGraphFromFile(char *filenameIn);
 
 // Heap methods
 HeapNode *newHeapNode(int value, int key);
@@ -66,36 +68,31 @@ void writeMSTEdges(int vertex_1, int vertex_2, char *filenameOut);
 
 // main method
 void printMSTwithDFS(Graph *graph, int vertex, char *fileName);
-void printEdgesMST(int *array, int *cost, int size, char *filenameOut);
-int* prim(Graph *graph, char* filename);
+void printEdgesMST(Graph *graph, char *filenameOut);
+Graph* prim(Graph *graph);
 
 void main(int argc, char *argv[]){
-    FILE *file;
     char *filenameIn = argv[1];
     char *filenameOut = argv[2];
-    file = fopen(filenameIn, "r");
-    isFileExists(file, filenameIn);
 
-    Graph* graph = createAndPopulateGraphByFile(file);
-    fclose(file);
+    Graph* graph = createAndPopulateGraphFromFile(filenameIn);
+    
 
-    // printGraph(graph);
-    prim(graph, filenameOut);
+    graph = prim(graph);
+    printEdgesMST(graph, filenameOut);
 }
 
 // main method
-int* prim(Graph *graph, char* filename)
+Graph* prim(Graph *graph)
 {
     int size = graph->size;
-    int parent[size];
-    int cost[size];
+    int *parent = graph->ant;
+    int *cost = graph->cost;
 
     Heap *minHeap = createMinHeap(size);
 
     for (int i = 1; i < size; ++i)
     {
-        parent[i] = -1;
-        cost[i] = INT_MAX;
         minHeap->array[i] = newHeapNode(i, cost[i]);
         minHeap->position[i] = i;
     }
@@ -123,21 +120,24 @@ int* prim(Graph *graph, char* filename)
             adjVertex_U = adjVertex_U->next;
         }
     }
-    
-    printEdgesMST(parent, cost, size, filename);
+
+    return graph;
 }
-void printEdgesMST(int *edges,int* cost, int size, char* filenameOut) {
+void printEdgesMST(Graph *graph, char* filenameOut) {
+    int* edges = graph->ant;
+    int* cost = graph->cost;
+    int size = graph->size;
     int totalCost = 0;
     for (int i = 1; i < size; ++i) {
         totalCost = totalCost + cost[i];
     }
     writeMSTTotalCost(totalCost, filenameOut);
 
-    Graph* graph = createGraph(size);
+    Graph* graphPrint = createGraph(size);
     for(int i=1; i<size; i++) {
-        addEdge(graph, edges[i], i, 0);
+        addEdge(graphPrint, i, edges[i], 0);
     }
-    printMSTwithDFS(graph, 0, filenameOut);
+    printMSTwithDFS(graphPrint, 0, filenameOut);
 }
 
 void printMSTwithDFS(Graph *graph, int vertex, char* fileName) {
@@ -172,10 +172,14 @@ Graph *createGraph(int size)
 
     graph->adjList = malloc(size * sizeof(AdjacencyList));
     graph->visited = malloc(size * sizeof(int));
+    graph->ant = malloc(size * sizeof(int));
+    graph->cost = malloc(size * sizeof(int));
     for (int i = 0; i < size; i++)
     {
         graph->adjList[i].head = NULL;
         graph->visited[i] = 0;
+        graph->ant[i] = -1;
+        graph->cost[i] = INT_MAX;
     }
 
     return graph;
@@ -195,19 +199,23 @@ void addNodeInAdjacencyList(Graph *graph, int adjListVertex, int vertex, int wei
     graph->adjList[adjListVertex].head = newNode;
 }
 
-Graph *createAndPopulateGraphByFile(FILE *file)
+Graph *createAndPopulateGraphFromFile(char* filenameIn)
 {
-    int sizeGraph, totalEdges;
-    fscanf(file, "%d %d", &sizeGraph, &totalEdges);
-    Graph *graph = createGraph(sizeGraph);
+     FILE* file = fopen(filenameIn, "r");
+     isFileExists(file, filenameIn);
+     
+     int sizeGraph, totalEdges;
+     fscanf(file, "%d %d", &sizeGraph, &totalEdges);
+     Graph *graph = createGraph(sizeGraph);
 
-    int vertex_1, vertex_2, weight;
-    for (int i = 0; i < totalEdges; i++)
-    {
-        fscanf(file, "%d %d %d", &vertex_1, &vertex_2, &weight);
-        addEdge(graph, vertex_1, vertex_2, weight);
+     int vertex_1, vertex_2, weight;
+     for (int i = 0; i < totalEdges; i++)
+     {
+         fscanf(file, "%d %d %d", &vertex_1, &vertex_2, &weight);
+         addEdge(graph, vertex_1, vertex_2, weight);
     }
 
+    fclose(file);
     return graph;
 }
 
