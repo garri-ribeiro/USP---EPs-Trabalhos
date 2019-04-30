@@ -23,6 +23,7 @@ typedef struct AdjacencyList
 typedef struct Graph
 {
     int size;
+    int* visited;
     struct AdjacencyList *adjList;
 } Graph;
 
@@ -46,8 +47,7 @@ AdjacencyListNode *newAdjacencyListNode(int destination, int weight);
 Graph *createGraph(int size);
 void addEdge(Graph *graph, int source, int destination, int weight);
 void addNodeInAdjacencyList(Graph *graph, int adjListVertex, int vertex, int weight);
-Graph *CreateAndPopulateGraphByFile(FILE *file);
-void printGraph(Graph *graph);
+Graph *createAndPopulateGraphByFile(FILE *file);
 
 // Heap methods
 HeapNode *newHeapNode(int value, int key);
@@ -59,16 +59,16 @@ bool insideOfMinHeap(Heap *minHeap, int value);
 void decreaseKey(Heap *minHeap, int value, int key);
 HeapNode *extractMin(Heap *minHeap);
 
-// main method
-void writeEdgesMSTinFile(int *array, int* cost, int size, char* filenameOut);
-int* Prim(Graph *graph, char* filename);
+//file method
+bool isFileExists(FILE *file, char *filename);
+void writeMSTTotalCost(int cost, char *filenameOut);
+void writeMSTEdges(int vertex_1, int vertex_2, char *filenameOut);
 
-bool isFileExists(FILE* file, char* filename) {
-    if(file == NULL) {
-        printf("Could not open file %s", filename);
-        exit(1);
-    }
-}
+// main method
+void printMSTwithDFS(Graph *graph, int vertex, char *fileName);
+void printEdgesMST(int *array, int *cost, int size, char *filenameOut);
+int* prim(Graph *graph, char* filename);
+
 void main(int argc, char *argv[]){
     FILE *file;
     char *filenameIn = argv[1];
@@ -76,15 +76,15 @@ void main(int argc, char *argv[]){
     file = fopen(filenameIn, "r");
     isFileExists(file, filenameIn);
 
-    Graph* graph = CreateAndPopulateGraphByFile(file);
+    Graph* graph = createAndPopulateGraphByFile(file);
     fclose(file);
 
     // printGraph(graph);
-    Prim(graph, filenameOut);
+    prim(graph, filenameOut);
 }
 
 // main method
-int* Prim(Graph *graph, char* filename)
+int* prim(Graph *graph, char* filename)
 {
     int size = graph->size;
     int parent[size];
@@ -123,22 +123,36 @@ int* Prim(Graph *graph, char* filename)
             adjVertex_U = adjVertex_U->next;
         }
     }
-
-    writeEdgesMSTinFile(parent, cost, size, filename);
-}
-void writeEdgesMSTinFile(int *edges,int* cost, int size, char* filenameOut)
-{
-    FILE* file = fopen(filenameOut, "w");
-    int totalCost = 0;
-    for (int i = 1; i < size; ++i)
-        totalCost = totalCost + cost[i];
     
-    fprintf(file, "%d\n", totalCost);
+    printEdgesMST(parent, cost, size, filename);
+}
+void printEdgesMST(int *edges,int* cost, int size, char* filenameOut) {
+    int totalCost = 0;
+    for (int i = 1; i < size; ++i) {
+        totalCost = totalCost + cost[i];
+    }
+    writeMSTTotalCost(totalCost, filenameOut);
 
-    for (int i = 1; i < size; ++i)
-        fprintf(file, "%d %d\n", edges[i], i);
+    Graph* graph = createGraph(size);
+    for(int i=1; i<size; i++) {
+        addEdge(graph, edges[i], i, 0);
+    }
+    printMSTwithDFS(graph, 0, filenameOut);
+}
 
-    fclose(file);
+void printMSTwithDFS(Graph *graph, int vertex, char* fileName) {
+    AdjacencyListNode *adjVertex_U = graph->adjList[vertex].head;
+    graph->visited[vertex] = 1;
+
+    while (adjVertex_U != NULL) {
+        int vertex_V = adjVertex_U->vertex;
+        if (graph->visited[vertex_V] == 0)
+        {
+            writeMSTEdges(vertex,vertex_V, fileName);
+            printMSTwithDFS(graph, vertex_V, fileName);
+        }
+        adjVertex_U = adjVertex_U->next;
+    }
 }
 
 // Graph methods
@@ -157,9 +171,11 @@ Graph *createGraph(int size)
     graph->size = size;
 
     graph->adjList = malloc(size * sizeof(AdjacencyList));
+    graph->visited = malloc(size * sizeof(int));
     for (int i = 0; i < size; i++)
     {
         graph->adjList[i].head = NULL;
+        graph->visited[i] = 0;
     }
 
     return graph;
@@ -179,7 +195,7 @@ void addNodeInAdjacencyList(Graph *graph, int adjListVertex, int vertex, int wei
     graph->adjList[adjListVertex].head = newNode;
 }
 
-Graph *CreateAndPopulateGraphByFile(FILE *file)
+Graph *createAndPopulateGraphByFile(FILE *file)
 {
     int sizeGraph, totalEdges;
     fscanf(file, "%d %d", &sizeGraph, &totalEdges);
@@ -193,23 +209,6 @@ Graph *CreateAndPopulateGraphByFile(FILE *file)
     }
 
     return graph;
-}
-
-void printGraph(Graph *graph)
-{
-    int size = graph->size;
-    for (int i = 0; i < size; i++)
-    {
-        printf("Adjacency list of %d |", i);
-        AdjacencyListNode *node = graph->adjList[i].head;
-
-        while (node != NULL)
-        {
-            printf(" %d", node->vertex);
-            node = node->next;
-        }
-        printf("\n");
-    }
 }
 
 // Heap methods
@@ -240,8 +239,7 @@ void swapHeapNode(HeapNode **a, HeapNode **b)
     *b = t;
 }
 
-void minHeapify(Heap *minHeap, int idx)
-{
+void minHeapify(Heap *minHeap, int idx) {
     int smallest = idx;
     int left = 2 * idx + 1;
     int right = 2 * idx + 2;
@@ -266,8 +264,7 @@ void minHeapify(Heap *minHeap, int idx)
     }
 }
 
-HeapNode *extractMin(Heap *minHeap)
-{
+HeapNode *extractMin(Heap *minHeap) {
     if (isMinHeapEmpty(minHeap))
         return NULL;
 
@@ -285,31 +282,49 @@ HeapNode *extractMin(Heap *minHeap)
     return root;
 }
 
-int isMinHeapEmpty(Heap *minHeap)
-{
+int isMinHeapEmpty(Heap *minHeap) {
     return minHeap->size == 0;
 }
 
-bool insideOfMinHeap(Heap *minHeap, int value)
-{
+bool insideOfMinHeap(Heap *minHeap, int value) {
     if (minHeap->position[value] < minHeap->size)
         return true;
     return false;
 }
 
-void decreaseKey(Heap *minHeap, int value, int key)
-{
+void decreaseKey(Heap *minHeap, int value, int key) {
     int i = minHeap->position[value];
 
     minHeap->array[i]->key = key;
 
     while (i && minHeap->array[i]->key < minHeap->array[(i - 1) / 2]->key)
     {
-        // Swap this node with its parent
         minHeap->position[minHeap->array[i]->value] = (i - 1) / 2;
         minHeap->position[minHeap->array[(i - 1) / 2]->value] = i;
         swapHeapNode(&minHeap->array[i], &minHeap->array[(i - 1) / 2]);
 
         i = (i - 1) / 2;
     }
+}
+
+// file method
+bool isFileExists(FILE *file, char *filename ){
+    if (file == NULL) {
+        printf("Could not open file %s", filename);
+        exit(1);
+    }
+}
+
+void writeMSTTotalCost(int cost, char *filenameOut)
+{
+    FILE *file = fopen(filenameOut, "w");
+    fprintf(file, "%d\n", cost);
+    fclose(file);
+}
+
+void writeMSTEdges(int vertex_1, int vertex_2, char *filenameOut)
+{
+    FILE *file = fopen(filenameOut, "a");
+    fprintf(file, "%d %d\n", vertex_1, vertex_2);
+    fclose(file);
 }
