@@ -3,152 +3,140 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Scanner;
 
 class Main {
 
-    private static Map<String, Integer> wordsMap = new HashMap<>();
-    private static List<String> dominatingPatterns = new LinkedList<>();
-    private static int countDominatingPattern = 0;
+    private static int occurrencesDominatingPattern = 0;
+    private static List<String> listOfWords = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
         while (true) {
             int numberOfWords = Integer.parseInt(scan.nextLine());
+
             if(numberOfWords == 0) {
                 break;
             }
 
-            Node root = new Node(null);
+            Trie trie = new Trie();
             while (numberOfWords != 0) {
-                createTrie(root, scan.nextLine());
+                String word = scan.nextLine();
+                listOfWords.add(word);
+                trie.insertWord(word);
                 numberOfWords--;
             }
 
-            searchWord(root, scan.nextLine());
-            printAnswer();
-            wordsMap.clear();
+            List<String> dominatingPatterns = searchPatterns(trie.getRoot(), scan.nextLine());
+
+            printAnswer(dominatingPatterns);
+
+            listOfWords.clear();
+            occurrencesDominatingPattern = 0;
         }
     }
 
-    private static void searchWord(Node root, String word){
-        Node node = root;
-        List<Node> children;
+    private static List<String> searchPatterns(TrieNode root, String phrase) {
+        List<String> dominatingPatterns = new LinkedList<>();
+        char[] phraseArray = phrase.toCharArray();
+        int maxOccurrences = 0;
         int head = 0;
-        while(word.length() != 0) {
-            char letter = word.charAt(head);
+        int newBegin = 0;
+        TrieNode current = root;
 
-            children = node.getChildren();
-            Optional<Node> possibleChild = searchChild(children, letter);
+        while(phraseArray.length != newBegin) {
+            char character = phraseArray[head];
 
-            if (!possibleChild.isPresent()) {
-                node = root;
-                head = 0;
-                word = word.substring(1);
+            current = current.getChildren().get(character);
 
+            if(current == null) {
+                current = root;
+                newBegin++;
+                head = newBegin;
                 continue;
             }
 
-            Node child = possibleChild.get();
-            if(child.isWord()) {
-                Integer value = wordsMap.get(child.getWord());
-                int newValue = value+1;
+            if(current.isWord()) {
+                int wordOccurrences = current.addWordOccurrence();
 
-                if(newValue > countDominatingPattern) {
+                if(wordOccurrences > maxOccurrences) {
                     dominatingPatterns.clear();
-                    dominatingPatterns.add(child.getWord());
-                    countDominatingPattern = newValue;
-                } else if (newValue == countDominatingPattern) {
-                    dominatingPatterns.add(child.getWord());
+                    dominatingPatterns.add(current.getWord());
+                    maxOccurrences = wordOccurrences;
+                } else if(wordOccurrences == maxOccurrences) {
+                    dominatingPatterns.add(current.getWord());
                 }
-
-                wordsMap.put(possibleChild.get().getWord(), newValue);
             }
 
             head++;
-            if(head == word.length()) {
-                node = root;
-                head = 0;
-                word = word.substring(1);
-            } else {
-                node = child;
+            if(head == phraseArray.length) {
+                current = root;
+                newBegin++;
+                head = newBegin;
             }
         }
-    }
 
-
-    private static void createTrie(Node root, String word){
-        String subWord = word;
-        Node node = root;
-        List<Node> children;
-
-        while(subWord.length() != 0) {
-            char letter = subWord.charAt(0);
-            children = node.getChildren();
-            Optional<Node> possibleChild = searchChild(children, letter);
-
-            if(!possibleChild.isPresent()) {
-                Node child = new Node(letter);
-                node.addChild(child);
-                node = child;
-            } else {
-                node = possibleChild.get();
-            }
-
-            if(subWord.length() == 1) {
-                wordsMap.put(word, 0);
-                node.setWord(word);
-                return;
-            }
-
-            subWord = subWord.substring(1);
+        occurrencesDominatingPattern = maxOccurrences;
+        if(occurrencesDominatingPattern == 0) {
+            dominatingPatterns = listOfWords;
         }
+        return dominatingPatterns;
     }
 
-    private static Optional<Node> searchChild(List<Node> children, char letter) {
-        return children.stream()
-                       .filter(child -> child.getValue() == letter)
-                       .findFirst();
-    }
-
-    private static void printAnswer() {
-        System.out.format("%d%n", countDominatingPattern);
+    private static void printAnswer(List<String> dominatingPatterns) {
+        System.out.printf("%d%n", occurrencesDominatingPattern);
         dominatingPatterns.forEach(pattern -> {
-            System.out.format("%s%n",  pattern);
+            System.out.printf("%s%n",  pattern);
         });
     }
 }
 
-class Node {
-    private List<Node> children;
-    private Character value;
+class Trie {
+    private TrieNode root;
+
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insertWord(String word) {
+        TrieNode current = root;
+
+        for (int i = 0; i < word.length(); i++) {
+            current = current.getChildren()
+                             .computeIfAbsent(word.charAt(i), c -> new TrieNode());
+        }
+        current.setWord(word);
+    }
+
+    TrieNode getRoot() {
+        return root;
+    }
+}
+
+class TrieNode {
+    private Map<Character, TrieNode> children;
     private boolean isWord;
     private String word;
-    private int count;
+    private int occurrencesWords;
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    Node(Character value)
-    {
-        this.children = new ArrayList<>();
-        this.value = value;
+    TrieNode() {
+        this.children = new HashMap<>();
         this.isWord = false;
         this.word = "";
-        this.count = 0;
+        this.occurrencesWords = 0;
     }
 
+    Map<Character, TrieNode> getChildren() {
+        return children;
+    }
 
-    void addChild(Node child)
-    {
-        children.add(child);
+    boolean isWord() {
+        return isWord;
+    }
+
+    String getWord() {
+        return word;
     }
 
     void setWord(String word) {
@@ -156,19 +144,8 @@ class Node {
         this.word = word;
     }
 
-    String getWord() {
-        return word;
-    }
-
-    boolean isWord() {
-        return isWord;
-    }
-
-    List<Node> getChildren() {
-        return children;
-    }
-
-    char getValue() {
-        return value;
+    int addWordOccurrence() {
+        this.occurrencesWords++;
+        return this.occurrencesWords;
     }
 }
