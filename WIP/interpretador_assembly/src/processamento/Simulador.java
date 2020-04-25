@@ -1,0 +1,137 @@
+package processamento;
+
+import CPU.CPU;
+
+public class Simulador {
+	private CicloInstruçao ciclo;
+	int numOperacoes;
+	static int IR = 0;
+	
+	
+	static String[] sinaisControle = {
+//			"MOV","ADD","SUB","MUL","DIV","INC","DEC","CMP","JMP","JZ","JNZ","JE","JNE","JG","JB","JGE","JBE",
+			
+//			0 | MAR <-- PC  PORTA 2 | PORTA 3
+			"011000000000000000000000 0000",
+//			1 | MBR <-- Memoria PORTA 22 | PORTA 24
+			"000000000000000000000101 0000",
+//			2 | IR <-- MBR PORTA 5 | PORTA 14
+			"000010000000010000000000 0000",
+//			3 | PC <-- PC + 1 PORTA 1 | PORTA 2
+			"110000000000000000000000 0000",
+//			4 | MAR <-- IR PORTA 3 | PORTA 15
+			"001000000000001000000000 0000",
+//			5| MAR <-- AX PORTA 3 | PORTA 7
+			"001000100000000000000000 0000",
+//			6 | MAR <-- BX PORTA 3 | PORTA 9
+			"001000001000000000000000 0000",
+//			7 | MAR <-- CX PORTA 3 | PORTA 11
+			"001000000010000000000000 0000",
+//			8 | MAR <-- DX PORTA 3 | PORTA 13",
+			"001000000000100000000000 0000",
+//			9 | MBR <-- AX PORTA 4 | PORTA 7
+			"000100100000000000000000 0000",
+//			10 | MBR <-- BX PORTA 4 | PORTA 9
+			"000100001000000000000000 0000",
+//			11 | MBR <-- CX PORTA 4 | PORTA 11
+			"000100000010000000000000 0000",
+//			12 | MBR <-- DX PORTA 4 | PORTA 13
+			"000100000000100000000000",
+//			13 | MBR <-- IR PORTA 4 | PORTA 15
+			"000100000000001000000000",
+//			14 | Memória <-- MBR PORTA 23 | PORTA 21
+			"000000000000000000001010", 
+//			15 | AX <-- BX PORTA 6 | PORTA 9
+			"000001001000000000000000",
+//			16 | AX <-- CX PORTA 6 | PORTA 11
+			"000001000010000000000000",
+//			17 | AX <-- DX PORTA 6 | PORTA 13
+			"000001000000100000000000",
+//			18 | BX <-- AX PORTA 8 | PORTA 7
+			"000000110000000000000000",
+//			19 | BX <-- CX PORTA 8 | PORTA 11
+			"000000010010000000000000",
+//			20 | BX <-- DX PORTA 8 | PORTA 13
+			"000000010000100000000000",
+//			21 | CX <-- AX PORTA 10 | PORTA 7
+			"000000100100000000000000",
+//			22 | CX <-- BX PORTA 10 | PORTA 9
+			"000000001100000000000000",
+//			23 | CX <-- DX PORTA 10 | PORTA 13
+			"000000000100100000000000",
+//			24 | DX <-- AX PORTA 12 | PORTA 7
+			"000000100001000000000000",
+//			25 | DX <-- BX PORTA 12 | PORTA 9
+			"000000001001000000000000",
+//			26 | DX <-- CX PORTA 12 | PORTA 11
+			"000000000011000000000000",
+//			27 | AX <-- IR PORTA 6 | PORTA 15
+			"000001000000001000000000",
+//			28 | BX <-- IR PORTA 8 | PORTA 15
+			"000000010000001000000000",
+//			29 | CX <-- IR PORTA 10 | PORTA 15
+			"000000000100001000000000",
+//			30 | DX <-- IR PORTA 12 | PORTA 15
+			"000000000001001000000000",
+//			31 | X <-- MBR PORTA 17 | PORTA 5
+			"000010000000000010000000",
+//			32 | ULA <-- AX PORTA 18 | PORTA 7
+			"000000100000000001000000",
+//			33 | ULA <-- BX PORTA 18 | PORTA 9
+			"000000001000000001000000",
+//			34 | ULA <-- CX PORTA 18 | PORTA 11
+			"000000000010000001000000",
+//			35 | ULA <-- DX PORTA 18 | PORTA 13
+			"000000000000100001000000",
+//			36 | ULA <-- IR PORTA 18 | PORTA 15
+			"000000000000001001000000",
+//			37 | MBR <-- AC PORTA 4 | PORTA 19
+			"000100000000000000100000",
+//			38 | AX <-- AC PORTA 6 | PORTA 19
+			"000001000000000000100000",
+//			39 | BX <-- AC PORTA 8 | PORTA 19
+			"000000010000000000100000",
+//			40 | X <-- AC PORTA 10 | PORTA 19
+			"000000000100000000100000",
+//			41 | DX <-- AC PORTA 12 | PORTA 19
+			"000000000001000000100000",
+//			42 | <-- AX PORTA 17 | PORTA 7
+			"000000100000000010000000",
+//			43 |  <-- BX PORTA 17 | PORTA 9
+			"000000001000000010000000",
+//			44 | X <-- CX PORTA 17 | PORTA 11
+			"000000000010000010000000",
+//			45 | X <-- DX PORTA 17 | PORTA 13
+			"000000000000100010000000",
+//			46 | X <-- IR PORTA 17 | PORTA 15
+			"000000000000001010000000",
+//			47 | PC <-- IR PORTA 11 | PORTA 1
+			"000000000010001000000000",
+	};
+	
+	public Simulador(String[] comandos){
+		ciclo = new CicloInstruçao();
+		numOperacoes = comandos.length;
+		Memoria.recebeComandos(comandos);
+	}
+	
+	
+	
+	public void executa(){
+		IR = 0;
+		for(int i = 0; i<numOperacoes;i++){
+			String[] comando = Memoria.proximaInstrucao(IR);
+			ciclo.comandoConcluido = false;
+			while(!ciclo.comandoConcluido){
+				ciclo.proximoCiclo(comando);
+			}imprimeOperacoes(); 
+			IR++;
+		}
+	}
+	
+	void imprimeOperacoes(){
+		for(String s : CicloInstruçao.passo){
+			System.out.println(s);
+		}CicloInstruçao.passo.clear();
+	}
+}
