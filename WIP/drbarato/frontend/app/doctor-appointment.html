@@ -1,0 +1,322 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Marcar consulta</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- favicon
+			============================================ -->
+	<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+	<!-- Google Fonts
+			============================================ -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+	<!-- Bootstrap CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- font awesome CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<!-- meanmenu CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/meanmenu/meanmenu.min.css">
+	<!-- animate CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- normalize CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<!-- wave CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/wave/waves.min.css">
+	<link rel="stylesheet" href="css/wave/button.css">
+	<!-- main CSS
+			============================================ -->
+	<link rel="stylesheet" href="css/main.css">
+	<!-- style CSS
+			============================================ -->
+	<link rel="stylesheet" href="style.css">
+	<!-- responsive CSS
+			============================================ -->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- datapicker CSS
+            ============================================ -->
+    <link rel="stylesheet" href="css/datapicker/datepicker3.css">
+    <!-- dialog CSS
+            ============================================ -->
+    <link rel="stylesheet" href="css/dialog/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/dialog/dialog.css">
+	<!-- modernizr JS
+			============================================ -->
+	<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+	<script src="js/moment.min.js"></script>
+	
+</head>
+
+<body>
+
+        <div class="header-top-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="logo-area">
+                            <a href="home.html  ">
+                                <img src="img/logo.png" alt="" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <div class="header-top-menu">
+                            <ul class="nav navbar-nav notika-top-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link">Bem vindo,
+                                        <span id="name-navbar"></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu message-dd chat-dd" style="padding: 0;">
+                                        <div class="hd-message-info">
+                                            <a href="../index.html">
+                                                <div class="hd-message-sn">
+                                                    <div class="hd-mg-ctn">
+                                                        <h3>
+                                                            <i class="fa fa-sign-out"></i> Logout</h3>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Header Top Area -->
+        <!-- Mobile Menu start -->
+        <div class="mobile-menu-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="mobile-menu">
+                            <nav id="dropdown">
+                                <ul class="mobile-menu-nav">
+                                    <li>
+                                        <a data-toggle="collapse" data-target="#Charts" href="#">Home</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="collapse" data-target="#Charts" href="#">
+                                            <i class="fa fa-sign-out"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu end -->
+        <!-- Main Menu area start-->
+                <div class="main-menu-area mg-tb-40">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
+                                    <li class="active">
+                                        <a href="home.html">
+                                            <i class="fa fa-home"></i>Buscar médico</a>
+                                    </li>
+                                    <li class="active navbar-user">
+                                        <a href="list-doctor-appointment.html">
+                                            <i class="fa fa-check"></i>Histórico consultas
+                                        </a>
+                
+                                    </li>
+                                    <li class="active navbar-doctor">
+                                        <a href="list-done-appointments-doctor.html">
+                                            <i class="fa fa-check"></i>Controle das consultas
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <!-- <div class="container">
+            <div class="alert-list">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="notika-icon notika-close"></i>
+                        </span>
+                    </button> Sua consulta já foi marcada ! Verifique
+                    <a href="list-doctor-appointment.html" class="alert-link">histórico de suas consultas</a> para ter mais detalhes
+                </div>
+            </div>
+        </div> -->
+        <div class="breadcomb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcomb-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcomb-wp">
+                                        <div class="breadcomb-icon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <div class="breadcomb-ctn">
+                                            <h2>Marcar consulta</h2>
+                                            <p>
+                                                <span class="bread-ntd">Obtenha mais informações sobre o médico e escolha um horário</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-7">
+                    <div class="view-mail-list sm-res-mg-t-30">
+                        <div class="view-mail-hd">
+                            <div class="view-mail-hrd">
+                                <h2 id="doctor-name">
+                                    <!-- Dr. Erick Minagawa -->
+                                </h2>
+                            </div>
+                            <div class="view-ml-rl">
+                                <span class="label label-info" id="doctor-speciality"></span>
+        
+                            </div>
+                        </div>
+                        <div class="mail-ads mail-vw-ph">
+                            <p class="first-ph">
+                                <b>Descrição: </b>
+                                <span id="doctor-bio"></span>
+                                <!-- Lorem Ipsum has been the industry's standard dummy text ever</p> -->
+                            <p>
+                                <b>Telefone:</b>
+                                <span id="doctor-phone"></span>
+                                <!-- (11) 4231-2331 -->
+                            </p>
+                            <hr>
+                            <p class="last-ph">
+                                <b>Endereço:</b> 
+                                <span id="doctor-address"></span>
+                                <!-- Av. Albert Einstein, 627 - Jardim Leonor, São Paulo - SP, 05652-900</p> -->
+                        </div>
+                        <div class="google-map-single">
+                            <div id="map2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-5">
+                    <div class="view-mail-list sm-res-mg-t-30">
+                        <div class="h2">Horários disponiveis</div>
+                        <hr>
+                        <div class="form-group nk-datapk-ctm form-elet-mg" id="data_1">
+                            <label>Buscar data disponíveis:</label>
+                            <div class="form-group ic-cmp-int">
+                                <div class="form-ic-cmp">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div class="nk-int-st">
+                                    <div class="input-group date nk-int-st">
+                                        <span class="input-group-addon"></span>
+                                        <input type="text" class="form-control" value="30/11/2018">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <div class="dropdown-trig-sing">
+                                <ul id="schedule-list" class="dropdown-menu" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+	<!-- Invoice area End-->
+	<!-- Start Footer area-->
+	<div class="footer-copyright-area">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="footer-copy-right">
+						<p>Copyright © 2018 . All rights reserved. Template by
+							<a href="https://colorlib.com">Colorlib</a>.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Footer area-->
+	<!-- jquery
+		============================================ -->
+	<script src="js/vendor/jquery-1.12.4.min.js"></script>
+	<!-- bootstrap JS
+		============================================ -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- wow JS
+		============================================ -->
+	<script src="js/wow.min.js"></script>
+	<!-- meanmenu JS
+		============================================ -->
+	<script src="js/meanmenu/jquery.meanmenu.js"></script> 
+	<script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<!-- sparkline JS
+		============================================ -->
+	<script src="js/sparkline/jquery.sparkline.min.js"></script>
+	<script src="js/sparkline/sparkline-active.js"></script>
+	<!--  wave JS
+		============================================ -->
+	<script src="js/wave/waves.min.js"></script>
+    <script src="js/wave/wave-active.js"></script>
+    <!-- datapicker JS
+    		============================================ -->
+    <script src="js/datapicker/bootstrap-datepicker.js"></script>
+    <script src="js/datapicker/datepicker-active.js"></script>
+	<!-- plugins JS
+		============================================ -->
+    <script src="js/plugins.js"></script>
+    <script src="js/dialog/sweetalert2.min.js"></script>
+
+    <!-- Google map JS
+    		============================================ -->
+    <!-- <script src="js/google.maps/google.maps2-active.js"></script> -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVOIQ3qXUCmKVVV7DVexPzlgBcj5mQJmQ&callback=initMap"></script>
+
+	<!-- main JS
+		============================================ -->
+	<script src="js/main.js"></script>
+
+	<script> 
+		$(function () {
+			$("#navbar").load("structure/navbar.html");
+		});
+    </script>
+    
+    <!-- Controllers -->
+    <script src="controllers/doctor-appointment.js"></script>
+    <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>
