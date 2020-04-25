@@ -1,0 +1,64 @@
+<div class="modal" ng-class="openPost ? 'is-active' : ''">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Criar post</p>
+            <button class="delete" ng-click="cancel()"></button>
+        </header>
+        <form action="" ng-submit="savePost()">
+            <section class="modal-card-body">
+                <label class="label">Link da musica</label>
+                <div class="field">
+                    <p class="control">
+                        <input class="input" ng-model="post.caminhoMusica"></input>
+                    </p>
+                </div>
+                <label class="label">Descrição</label>
+                <div class="field">
+                    <p class="control">
+                        <textarea class="textarea" ng-model="post.postConteudo"></textarea>
+                    </p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button type="submit" class="button is-success">Criar</button>
+                <a class="button" ng-click="cancel()">Cancelar</a>
+            </footer>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="columns is-mobile">
+        <div class="column is-8 is-offset-2">
+            <br>
+            <h2 class="title is-inline-block">Ultimas atualizações</h2>
+            <div class="is-pulled-right">
+                <a class="button is-primary" ng-click="open()">Criar post</a>
+            </div>
+            <!-- FEEEEEEEEEED -->
+
+			<article class="message is-dark"  ng-show="posts.length == 0">
+                <div class="message-body has-text-centered">
+                    <span class="title is-4 ">Nenhum post no momento.
+                </div>
+            </article>
+
+            <div class="box" ng-repeat="post in posts">
+                <div class="media">
+                    <div class="media-left">
+                        <img src="front/img/user32.png">
+                    </div>
+                    <div class="media-content">
+                        <a ui-sref="app.profile({userId:post.IDusuario})"><strong>{{post.userNome}}</strong></a>
+						<small>{{post.tempo>24?(post.tempo/24|number:0)+'d':post.tempo+'h' }}</small>
+					</div>
+				</div>
+				<br>
+				<p>
+					{{post.postConteudo}}
+				</p>
+			</div>
+        </div>
+    </div>
+</div>

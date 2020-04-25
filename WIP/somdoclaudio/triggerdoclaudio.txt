@@ -1,0 +1,13 @@
+DELIMITER $$
+CREATE TRIGGER criaPostEvento
+AFTER INSERT ON cria
+FOR EACH ROW
+BEGIN
+	SET @nomeUser = (select userNome from usuario where new.IDusuario = IDusuario);
+SET @nomeEvent = (select eventoNome from evento where new.IDevento = IDevento);
+ 	SET @conteudo = CONCAT(@nomeUser, ' criou o evento ', @nomeEvent);
+INSERT INTO post(IDusuario,postConteudo,postData) VALUES (new.IDusuario, @conteudo,now());
+
+END
+$$
+DELIMITER;

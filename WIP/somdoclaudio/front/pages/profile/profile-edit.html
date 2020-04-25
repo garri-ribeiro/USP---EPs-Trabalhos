@@ -1,0 +1,47 @@
+<div class="container">
+    <br>
+    <div class="title"> Editar perfil</div>
+    <br>
+    <div class="box">
+        <form ng-submit="saveProfile()">
+            <div class="field">
+                <label class="label">Username</label>
+                <p class="control">
+                    <input class="input" type="text" ng-model="user.userNome">
+                </p>
+            </div>
+            <div class="field">
+                <label class="label">Email</label>
+                <p class="control">
+                    <input class="input" type="email" ng-model="user.email">
+                </p>
+            </div>
+            <div class="columns">
+                <!-- <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Data de nascimento</label>
+                        <p class="control">
+                            <input class="input" type="date" ng-model="user.dataNasci">
+                        </p>
+                    </div>
+                </div> -->
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Localização</label>
+                        <p class="control">
+                            <input class="input" type="text" ng-model="user.userLocalizacao">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped">
+              <p class="control">
+                <button class="button is-primary">Salvar</button>
+              </p>
+              <p class="control">
+                <button class="button is-link" ui-sref="app.profile({userId:user.IDusuario})">Cancelar</button>
+              </p>
+            </div>
+        </form>
+    </div>
+</div>

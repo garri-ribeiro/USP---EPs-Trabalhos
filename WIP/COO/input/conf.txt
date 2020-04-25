@@ -1,0 +1,6 @@
+150
+4
+input\fase1.txt
+input\fase2.txt
+input\fase3.txt
+input\fase4.txt

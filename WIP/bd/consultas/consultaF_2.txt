@@ -1,0 +1,8 @@
+SELECT nomeCurso, isencao, COUNT(Isencao) AS NumIsentos
+FROM matricula
+RIGHT JOIN curso as C ON matricula.CodCurso = c.CodCurso AND matricula.Isencao = 'S'
+WHERE (SELECT CodCurso
+       FROM latusensu
+       WHERE c.CodCurso = latusensu.CodCurso)
+GROUP BY C.CodCurso
+ORDER BY C.mensalidade DESC

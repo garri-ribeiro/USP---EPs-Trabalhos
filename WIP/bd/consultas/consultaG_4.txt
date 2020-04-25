@@ -1,0 +1,14 @@
+Liste o nome, o tipo de bolsa e o valor da bolsa de todos os alunos que possuem mais de uma bolsa 
+
+SELECT nome,tipobolsa,valorbolsa
+FROM individuo,bolsa
+WHERE (SELECT COUNT(CPF)
+FROM alunobolsa
+WHERE alunobolsa.CPF = individuo.CPF
+GROUP BY alunobolsa.CPF
+HAVING COUNT(alunobolsa.CPF) > 1)
+AND
+(individuo.CPF,bolsa.TipoBolsa) IN (Select CPF,tipobolsa
+ FROM alunobolsa
+ WHERE alunobolsa.CPF = individuo.CPF 
+AND alunobolsa.TipoBolsa = bolsa.TipoBolsa)
