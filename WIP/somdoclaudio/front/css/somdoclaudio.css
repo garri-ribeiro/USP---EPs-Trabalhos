@@ -1,0 +1,25 @@
+.nav-claudio {
+    background-color: #2897FF;
+    color: #fff;
+}
+.nav-claudio a {
+    color: #fff;
+}
+.hero-banner .hero {
+    background: url('../img/bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: screen;
+}
+
+.card-heading-profile {
+    padding: 2rem 1.5rem;
+    margin-top: 20px;
+    background-color:  #fff;
+    border-radius: 3px;
+}
+
+.title-login {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}

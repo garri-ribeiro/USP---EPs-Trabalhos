@@ -1,0 +1,26 @@
+<header>
+    <nav class="nav has-shadow">
+        <div class="container">
+            <div class="nav-left">
+                <a class="nav-item" ui-sref="app.home({userId: 1})">
+                    <img src="front/img/play-button.png" alt="SomDoClaudio logo">
+                </a>
+                <a class="nav-item is-tab" ui-sref="app.home({userId: 1})">Home</a>
+                <a class="nav-item is-tab" ui-sref="app.events()">Eventos</a>
+            </div>
+
+            <div class="nav-right nav-menu">
+                <a class="nav-item is-tab" ui-sref="app.profile({userId: 1})">
+                    <figure class="image is-16x16" style="margin-right: 8px;">
+                        <img src="front/img/user32.png">
+                    </figure>
+                    Perfil
+                </a>
+                <a class="nav-item is-tab" ui-sref="login">Sair</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<section>
+    <div ui-view=""></div>
+</section>

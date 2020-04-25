@@ -1,0 +1,57 @@
+<div class="container">
+    <br>
+    <div class="title">Criar evento</div>
+    <br>
+    <div class="box">
+        <form ng-submit="saveEvent()">
+            <div class="field">
+                <label class="label">Nome do evento</label>
+                <p class="control">
+                    <input class="input" type="text" ng-model="event.eventoNome">
+                </p>
+            </div>
+            <div class="field">
+                <label class="label">Descrição</label>
+                <p class="control">
+                    <textarea class="textarea" rows="2" ng-model="event.eventoDescricao"></textarea>
+                </p>
+            </div>
+            <div class="columns">
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Data</label>
+                        <p class="control">
+                            <input class="input" type="date" ng-model="event.data">
+                        </p>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Horario</label>
+                        <p class="control">
+                            <input class="input" type="text" ng-model="event.eventoHorario">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Localização</label>
+                        <p class="control">
+                            <input class="input" type="text" ng-model="event.eventoLocalizacao">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <p class="control">
+                    <button type="submit" class="button is-primary">Salvar</button>
+                </p>
+                <p class="control">
+                    <a class="button is-link" ui-sref="app.events()">Cancelar</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

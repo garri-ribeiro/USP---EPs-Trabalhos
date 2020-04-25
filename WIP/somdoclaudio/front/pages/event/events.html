@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="columns is-mobile">
+        <div class="column is-10 is-offset-1">
+            <br>
+            <h2 class="title is-2">Eventos
+                <span class="button is-primary is-pulled-right" ui-sref="app.eventCreate()">Criar evento</span>
+            </h2>
+            <br>
+            <div class="box" ng-repeat="event in events">
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-64x64">
+                            <img src="front/img/event.png" alt="Image">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p class="title is-4"><strong>{{event.eventoNome}}</strong></p>
+                            <p class="subtitle is-6">{{event.eventoDescricao}}</p>
+                        </div>
+                        <div class="is-pulled-right">
+                            <span class="icon is-smal" ui-sref="app.eventEdit({eventId:event.IDevento})" ng-click>
+                                <i class="fa fa-edit"></i>
+                            </span>
+                            <span class="icon is-smal" ng-click="deleteEvent(event.IDevento)">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </div>
+</div>

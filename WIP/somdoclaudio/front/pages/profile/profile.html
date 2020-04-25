@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="card-heading-profile">
+        <div class="columns">
+            <div class="column is-2">
+                <div class="image is-128x128 avatar">
+                    <img src="front/img/user128.png">
+                </div>
+            </div>
+            <div class="column is-10">
+                <p>
+                    <span class="title is-bold">{{user.userNome}}</span>
+					
+					<span ng-show="relacionamento == null " class="button is-primary is-outlined is-pulled-right"  ng-click="solicitar()">Adicionar</span>
+					<span ng-show="relacionamento.relacTipo==1 && user.IDusuario != 1" class="button is-primary is-outlined is-pulled-right" ng-click="excluir()" >Excluir</span>
+					<span ng-show="relacionamento.relacTipo==0 && relacionamento.acao==1" class="button is-primary is-pulled-right" >Amizade solicitada</span>
+						
+					<span ng-show="user.IDusuario==1" class="button is-primary is-outlined is-pulled-right" ui-sref="app.profileEdit({userId: user.IDusuario})">Editar perfil</span>
+                </p>
+                <p class="tagline">De {{user.userLocalizacao}}</p>
+				<p class="tagline">Membro desde {{user.dataIngresso|date:'dd MMM, y'}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="columns is-mobile">
+        <div class="column is-half is-offset-one-quarter">
+            <h2 class="title has-text-centered">Ultimas atualizações</h2>
+            <!-- FEEEEEEEEEED -->
+            <article class="message is-dark"  ng-show="posts.length == 0">
+                <div class="message-body has-text-centered">
+                    <span class="title is-4 ">Nenhum post encontrado.
+                </div>
+            </article>
+            <div class="box" ng-repeat="post in posts">
+                <div class="media">
+                    <div class="media-left">
+                        <img src="front/img/user32.png">
+                    </div>
+                    <div class="media-content">
+                       <a ui-sref="app.profile({userId:post.IDusuario})"> <strong>{{post.userNome}}</strong> </a>                       
+						<small>{{post.tempo>24?(post.tempo/24|number:0)+'d':post.tempo+'h' }}</small>
+                    
+					</div>
+            </div>
+            <br>
+            <p>
+               {{post.postConteudo}}
+            </p>
+			</div>
+    </div>
+</div>
+</div>
+</div>
