@@ -1,0 +1,4 @@
+Liste o nome e o valor de todos os cursos de Engenharia em strictu sensu
+SELECT nomecurso,mensalidade 
+FROM Curso,strictusensu 
+WHERE nomecurso LIKE 'Engenharia%' AND strictusensu.CodCurso = curso.CodCurso

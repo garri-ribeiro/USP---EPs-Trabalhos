@@ -1,0 +1,6 @@
+Liste todos os alunos e os intercâmbios realizados caso tenham participado de algum
+SELECT p.Nome, T.NomeInter
+FROM intercambista AS N
+JOIN intercambio as T ON n.NumInter=t.NumInter 
+RIGHT JOIN aluno as I on N.CPF = I.CPF
+JOIN individuo AS P ON I.CPF = P.CPF

@@ -1,0 +1,8 @@
+Liste todos o nome e o local de trabalho de todos os alunos de computação que estagiam
+SELECT p.Nome, T.Empresa
+FROM trabalha AS N
+JOIN estagio as T ON n.CNPJEmpresa=t.CNPJEmpresa
+JOIN aluno as I on N.CPF = I.CPF
+JOIN individuo AS P ON I.CPF = P.CPF
+JOIN matricula AS M ON P.CPF = M.CPF
+WHERE M.CodCurso IN ('710')
